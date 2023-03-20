@@ -39,13 +39,15 @@ public class GenerarYmostrarPoblacion {
         String azul = "\033[34m";
         String negro = "\033[30m";
         String rojo = "\033[31m";
+        String amarillo = "\033[33m";
+        String verde = "\033[32m";
 
         for (int f=0; f<fila; f++){
             for (int c=0; c<columna; c++){
                 if (poblado[f][c].getEstado() == 0){
-                    System.out.print(negro + poblado[f][c].getEstado() + " ");
-                } else if (poblado[f][c].getEstado() == 1) {
                     System.out.print(rojo + poblado[f][c].getEstado() + " ");
+                } else if (poblado[f][c].getEstado() == 1) {
+                    System.out.print(verde + poblado[f][c].getEstado() + " ");
                 }
                 else {
                         System.out.print(azul + poblado[f][c].getEstado() + " ");
