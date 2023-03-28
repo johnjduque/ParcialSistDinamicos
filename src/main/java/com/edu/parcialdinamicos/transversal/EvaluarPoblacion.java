@@ -9,67 +9,73 @@ public class EvaluarPoblacion {
     }
 
     public void evaluarPoblacion(Persona [][] poblado, int filas, int columnas, int numeroInteraciones,
-                                        int tiempoDeRecuperacion, int tiempoMuerte, float porcentajeSeparado){
+                                        int tiempoDeRecuperacion, float porcentajeSeparado){
 
         Poblacion situacion = new Poblacion();
-        Persona[][] poblacion = poblado;
-        GenerarYmostrarPoblacion mostrar = new GenerarYmostrarPoblacion();
+        MostrarPoblacion mostrar = new MostrarPoblacion();
         int iteracciones = 1;
-        int tiempo = numeroInteraciones;
-        int fila = filas;
-        int columna = columnas;
-        int recuperacion = tiempoDeRecuperacion;
-        int tiempoParaMuerte = tiempoMuerte;
-        float separado = (fila*columna)*porcentajeSeparado;
-        situacion.SituacionPoblacion(poblacion);
+        float separado = (filas*columnas)*porcentajeSeparado;
+        situacion.SituacionPoblacion(poblado);
+        String azul = "\033[34m";
+        String rojo = "\033[31m";
+        String verde = "\033[32m";
+        System.out.println("Poblacion Inicial");
+        mostrar.mostrarPoblacion(poblado, filas, columnas);
 
-        while (iteracciones <= tiempo){
-            for (int f=0; f<fila; f++){
-                for (int c=0; c<columna; c++){
-                    if (poblacion[f][c].getEstado() == 2){
-                        if(poblacion[f][c].getProbabilidadInmune()>0.9){
+        System.out.println(azul + "Los sanos actuales son: "+situacion.getSanos());
+        System.out.println(verde + "Los enfermos actuales son: "+situacion.getEnfermos());
+        System.out.println(rojo + "Los separados actuales son: "+situacion.getSeparados());
+        System.out.println("");
+
+        while (iteracciones < numeroInteraciones+1){
+            for (int f=0; f<filas; f++){
+                for (int c=0; c<columnas; c++){
+                    if (poblado[f][c].getEstado() == 2){
+                        if(poblado[f][c].getProbabilidadInmune()>0.9){
                             if(situacion.getSeparados() < separado){
-                                poblacion[f][c].setEstado(0);
+                                poblado[f][c].setEstado(0);
                                 situacion.setSeparados(situacion.getSeparados() + 1);
                                 situacion.setSanos(situacion.getSanos() - 1);
                             }
-                            else if (conVecinoEnfermo(poblacion, f, c) == 1) {
-                                poblacion[f][c].setEstado(1);
+                            else if (conVecinoEnfermo(poblado, f, c) == 1) {
+                                poblado[f][c].setEstado(1);
                                 situacion.setEnfermos(situacion.getEnfermos() + 1);
                                 situacion.setSanos(situacion.getSanos() - 1);
                             }
                         }
-                        else if (conVecinoEnfermo(poblacion, f, c) == 1) {
-                            poblacion[f][c].setEstado(1);
+                        else if (conVecinoEnfermo(poblado, f, c) == 1) {
+                            poblado[f][c].setEstado(1);
                             situacion.setEnfermos(situacion.getEnfermos() + 1);
                             situacion.setSanos(situacion.getSanos() - 1);
                         }
                     }
-                    else if (poblacion[f][c].getEstado() == 1) {
-                        if(poblacion[f][c].getProbabilidadMuerte() > 0.9){
+                    else if (poblado[f][c].getEstado() == 1) {
+                        if(poblado[f][c].getProbabilidadMuerte() > 0.9){
                             if(situacion.getSeparados() < separado){
-                                poblacion[f][c].setEstado(0);
+                                poblado[f][c].setEstado(0);
                                 situacion.setSeparados(situacion.getSeparados() + 1);
                                 situacion.setEnfermos(situacion.getEnfermos() - 1);
                             }
                         }
-                        else if (poblacion[f][c].getTiempoEnfermo() > recuperacion) {
-                            poblacion[f][c].setEstado(2);
+                        else if (poblado[f][c].getTiempoEnfermo() > tiempoDeRecuperacion) {
+                            poblado[f][c].setEstado(2);
                             situacion.setEnfermos(situacion.getEnfermos() - 1);
                             situacion.setSanos(situacion.getSanos() + 1);
                         }
                         else{
-                            poblacion[f][c].setTiempoEnfermo(poblacion[f][c].getTiempoEnfermo() + 1);
+                            poblado[f][c].setTiempoEnfermo(poblado[f][c].getTiempoEnfermo() + 1);
                         }
                     }
                 }
             }
-            iteracciones = iteracciones + 1;
-            mostrar.mostrarPoblacion(poblacion, fila, columna);
+            mostrar.mostrarPoblacion(poblado, filas, columnas);
 
-            System.out.println("Los sanos actuales son: "+situacion.getSanos());
-            System.out.println("Los enfermos actuales son: "+situacion.getEnfermos());
-            System.out.println("Los separados actuales son: "+situacion.getSeparados());
+            System.out.println(azul + "Los sanos actuales son: "+situacion.getSanos());
+            System.out.println(verde + "Los enfermos actuales son: "+situacion.getEnfermos());
+            System.out.println(rojo + "Los separados actuales son: "+situacion.getSeparados());
+            System.out.println("Numero iteracion: " + iteracciones);
+            System.out.println("");
+            iteracciones = iteracciones + 1;
         }
     }
 

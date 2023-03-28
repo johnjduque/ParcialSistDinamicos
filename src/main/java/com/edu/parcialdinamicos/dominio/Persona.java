@@ -16,14 +16,6 @@ public class Persona {
         this.probabilidadInmune = probabilidadInmune;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getEstado() {
         return estado;
     }
@@ -36,10 +28,6 @@ public class Persona {
         return probabilidadMuerte;
     }
 
-    public void setProbabilidadMuerte(float probabilidadMuerte) {
-        this.probabilidadMuerte = probabilidadMuerte;
-    }
-
     public int getTiempoEnfermo() {
         return tiempoEnfermo;
     }
@@ -50,9 +38,5 @@ public class Persona {
 
     public float getProbabilidadInmune() {
         return probabilidadInmune;
-    }
-
-    public void setProbabilidadInmune(float probabilidadInmune) {
-        this.probabilidadInmune = probabilidadInmune;
     }
 }
